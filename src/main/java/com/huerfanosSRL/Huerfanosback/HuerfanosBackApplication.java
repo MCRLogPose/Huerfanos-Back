@@ -1,4 +1,4 @@
-package com.huerfanosSRL.Huerfanos_Back;
+package com.huerfanosSRL.Huerfanosback;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
