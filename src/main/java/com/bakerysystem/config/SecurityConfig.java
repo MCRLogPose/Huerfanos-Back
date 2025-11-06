@@ -37,7 +37,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
-                // 🔥 Activamos el soporte de CORS ANTES de CSRF
+                // Activamos el soporte de CORS ANTES de CSRF
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
@@ -71,7 +71,7 @@ public class SecurityConfig {
         return config.getAuthenticationManager();
     }
 
-    // ✅ Configuración global CORS
+    // Configuración global CORS
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
