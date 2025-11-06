@@ -23,7 +23,7 @@ public class RatingController {
         return ResponseEntity.ok(isLiked ? "Like agregado" : "Like removido");
     }
 
-    // 🗑️ Eliminar completamente la reacción
+    // Eliminar completamente la reacción
     @DeleteMapping("/remove")
     public ResponseEntity<String> deleteReaction(
             @RequestParam Long userId,

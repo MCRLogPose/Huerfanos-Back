@@ -8,6 +8,7 @@ import java.util.List;
 @Data
 @Builder
 public class ProductResponseDTO {
+    private Long id;
     private String sku;
     private String name;
     private String description;

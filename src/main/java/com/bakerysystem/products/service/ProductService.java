@@ -115,6 +115,7 @@ public class ProductService {
 
     private ProductResponseDTO toResponse(Product p) {
         return ProductResponseDTO.builder()
+                .id(p.getId())
                 .sku(p.getSku())
                 .name(p.getName())
                 .description(p.getDescription())
