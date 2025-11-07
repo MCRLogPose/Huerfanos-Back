@@ -1,5 +1,6 @@
 package com.bakerysystem.orders.controller;
 
+import com.bakerysystem.orders.dto.OrderRequest;
 import com.bakerysystem.orders.dto.OrderResponse;
 import com.bakerysystem.orders.mapper.OrderMapper;
 import com.bakerysystem.orders.model.Order;
@@ -21,9 +22,9 @@ public class OrderController {
     }
 
     // 🟢 Crear una nueva orden
-    @PostMapping
-    public ResponseEntity<OrderResponse> createOrder(@RequestParam Long userId, @RequestBody List<OrderItem> items) {
-        Order order = orderService.createOrder(userId, items);
+    @PostMapping("/create")
+    public ResponseEntity<OrderResponse> createOrder(@RequestParam Long userId, @RequestBody OrderRequest request) {
+        Order order = orderService.createOrder(userId, request.getItems(), request.getPaymentMethod());
         return ResponseEntity.ok(OrderMapper.toResponse(order));
     }
 

@@ -51,7 +51,7 @@ public class OrderService {
 
     // ✅ Crear una nueva orden (carrito -> pendiente)
     @Transactional
-    public Order createOrder(Long userId, List<OrderItem> items) {
+    public Order createOrder(Long userId, List<OrderItem> items, PaymentsMetod paymentMethod) {
         BigDecimal total = BigDecimal.ZERO;
 
         for (OrderItem item : items) {
@@ -87,6 +87,7 @@ public class OrderService {
                 .user(User.builder().id(userId).build())
                 .items(items)
                 .total(total)
+                .paymentMethod(paymentMethod.toString())
                 .orderStatus(OrderStatus.PENDING)
                 .paymentStatus(PaymentStatus.PENDING)
                 .build();
