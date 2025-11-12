@@ -2,6 +2,7 @@ package com.bakerysystem.orders.mapper;
 
 import com.bakerysystem.orders.dto.*;
 import com.bakerysystem.orders.model.Order;
+import com.bakerysystem.products.dto.ProductImageResponseDTO;
 
 import java.util.stream.Collectors;
 
@@ -22,6 +23,7 @@ public class OrderMapper {
                         .firstName(order.getUser().getFirstName())
                         .lastName(order.getUser().getLastName())
                         .email(order.getUser().getEmail())
+                        .address(order.getUser().getAddress())
                         .build() : null)
                 .items(order.getItems() != null ? order.getItems().stream()
                         .map(item -> OrderItemResponse.builder()
@@ -32,8 +34,18 @@ public class OrderMapper {
                                         .id(item.getProduct().getId())
                                         .name(item.getProduct().getName())
                                         .price(item.getProduct().getPrice())
+                                        .discountPercent((item.getProduct().getDiscountPercent()))
                                         .category(item.getProduct().getCategory() != null ?
                                                 item.getProduct().getCategory().getName() : null)
+                                        .images(item.getProduct().getImages() != null
+                                                ? item.getProduct().getImages().stream()
+                                                .map(img -> ProductImageResponseDTO.builder()
+                                                        .altText(img.getAltText())
+                                                        .provider(img.getProvider())
+                                                        .url(img.getUrl())
+                                                        .build())
+                                                .collect(Collectors.toList())
+                                                : null)
                                         .build() : null)
                                 .build())
                         .collect(Collectors.toList()) : null)

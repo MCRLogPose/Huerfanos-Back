@@ -1,16 +1,12 @@
 package com.bakerysystem.orders.service;
 
 import com.bakerysystem.auth.model.User;
-import com.bakerysystem.orders.dto.OrderItemResponse;
 import com.bakerysystem.orders.dto.OrderResponse;
-import com.bakerysystem.orders.dto.ProductSummary;
-import com.bakerysystem.orders.dto.UserSummary;
 import com.bakerysystem.orders.mapper.OrderMapper;
 import com.bakerysystem.orders.model.*;
 import com.bakerysystem.orders.repository.*;
 import com.bakerysystem.products.model.Product;
 import com.bakerysystem.products.repository.ProductRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,7 +22,13 @@ public class OrderService {
     private final ProductRepository productRepository;
     private final PaymentRepository paymentRepository;
 
-    // ✅ Obtener todas las órdenes con DTO (sin recursividad)
+    public OrderService(OrderRepository orderRepository, ProductRepository productRepository, PaymentRepository paymentRepository) {
+        this.orderRepository = orderRepository;
+        this.productRepository = productRepository;
+        this.paymentRepository = paymentRepository;
+    }
+
+    // Obtener todas las órdenes con DTO (sin recursividad)
     public List<OrderResponse> getAllOrderResponses() {
         return orderRepository.findAll()
                 .stream()
@@ -34,7 +36,7 @@ public class OrderService {
                 .collect(Collectors.toList());
     }
 
-    // ✅ Obtener órdenes de un usuario con DTO
+    // Obtener órdenes de un usuario con DTO
     public List<OrderResponse> getOrdersByUserResponse(Long userId) {
         return orderRepository.findByUserId(userId)
                 .stream()
@@ -42,14 +44,14 @@ public class OrderService {
                 .collect(Collectors.toList());
     }
 
-
-    public OrderService(OrderRepository orderRepository, ProductRepository productRepository, PaymentRepository paymentRepository) {
-        this.orderRepository = orderRepository;
-        this.productRepository = productRepository;
-        this.paymentRepository = paymentRepository;
+    public List<OrderResponse> getOrdersByStatusResponse(OrderStatus status) {
+        return orderRepository.findByOrderStatus(status)
+                .stream()
+                .map(OrderMapper::toResponse)
+                .collect(Collectors.toList());
     }
 
-    // ✅ Crear una nueva orden (carrito -> pendiente)
+    // Crear una nueva orden (carrito -> pendiente)
     @Transactional
     public Order createOrder(Long userId, List<OrderItem> items, PaymentsMetod paymentMethod) {
         BigDecimal total = BigDecimal.ZERO;
@@ -97,18 +99,18 @@ public class OrderService {
         return orderRepository.save(order);
     }
 
-    // ✅ Obtener orden por ID
+    // Obtener orden por ID
     public Order getOrderById(Long id) {
         return orderRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Orden no encontrada"));
     }
 
-    // ✅ Obtener todas las órdenes de un usuario
+    // Obtener todas las órdenes de un usuario
     public List<Order> getOrdersByUser(Long userId) {
         return orderRepository.findByUserId(userId);
     }
 
-    // ✅ Confirmar pago
+    // Confirmar pago
     @Transactional
     public Order confirmPayment(Long orderId) {
         Order order = getOrderById(orderId);
@@ -143,7 +145,7 @@ public class OrderService {
         return order;
     }
 
-    // ✅ Cancelar orden (solo dentro de 4 horas)
+    // Cancelar orden (solo dentro de 4 horas)
     @Transactional
     public Order cancelOrder(Long orderId) {
         Order order = getOrderById(orderId);
@@ -178,7 +180,7 @@ public class OrderService {
         return order;
     }
 
-    // ✅ Listar todas las órdenes (admin)
+    // Listar todas las órdenes (admin)
     public List<Order> getAllOrders() {
         return orderRepository.findAll();
     }
