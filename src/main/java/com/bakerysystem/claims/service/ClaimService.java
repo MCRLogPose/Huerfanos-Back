@@ -3,6 +3,7 @@ package com.bakerysystem.claims.service;
 import com.bakerysystem.auth.model.User;
 import com.bakerysystem.auth.repository.UserRepository;
 import com.bakerysystem.claims.dto.*;
+import com.bakerysystem.claims.mapper.ClaimMapper;
 import com.bakerysystem.claims.model.*;
 import com.bakerysystem.claims.repository.ClaimRepository;
 import com.bakerysystem.common.storage.CloudStorageService;
@@ -24,6 +25,7 @@ public class ClaimService {
     private final CloudStorageService storageService;
     private final UserRepository userRepository;
     private final OrderRepository orderRepository;
+    private final ClaimMapper claimMapper;
 
     public ClaimResponseDTO create(ClaimRequestDTO request) {
         User user = userRepository.findById(request.getUserId())
@@ -82,6 +84,8 @@ public class ClaimService {
                                         .build())
                                 .toList()
                         : List.of())
+                .userId(claim.getUser() != null ? claim.getUser().getId() : null)
+                .orderId(claim.getOrder() != null ? claim.getOrder().getId() : null)
                 .build();
     }
 }

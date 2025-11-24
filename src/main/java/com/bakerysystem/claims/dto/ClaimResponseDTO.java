@@ -15,4 +15,6 @@ public class ClaimResponseDTO {
     private LocalDateTime createdAt;
     private LocalDateTime reviewedAt;
     private List<ClaimImageResponseDTO> images;
+    private Long userId;
+    private Long orderId;
 }
